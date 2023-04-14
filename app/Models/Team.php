@@ -8,5 +8,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Team extends Model
 {
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'icon',
+        'company_id',
+    ];
     use HasFactory, SoftDeletes;
 }
