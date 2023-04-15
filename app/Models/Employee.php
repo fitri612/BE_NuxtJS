@@ -25,5 +25,15 @@ class Employee extends Model
         'responsibility_id',
     ];
 
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
     use HasFactory, SoftDeletes;
 }

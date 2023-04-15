@@ -8,5 +8,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
 {
+        /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'company_id',
+    ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function responvibilities()
+    {
+        return $this->hasMany(Responsibility::class);
+    }
     use HasFactory, SoftDeletes;
 }
