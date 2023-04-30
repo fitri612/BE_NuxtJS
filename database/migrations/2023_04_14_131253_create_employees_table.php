@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->integer('age')->nullable();
             $table->string('phone')->nullable();
+            $table->string('photo')->nullable();
 
             $table->bigInteger('team_id')->references('id')->on('teams');
             $table->bigInteger('role_id')->references('id')->on('roles');

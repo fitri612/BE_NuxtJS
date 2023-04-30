@@ -27,5 +27,10 @@ class Role extends Model
     {
         return $this->hasMany(Responsibility::class);
     }
+
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
     use HasFactory, SoftDeletes;
 }
