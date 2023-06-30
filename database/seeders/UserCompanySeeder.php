@@ -17,7 +17,7 @@ class UserCompanySeeder extends Seeder
     {
         for ($userId = 1; $userId <= 70; $userId++) {
             $companyId = rand(1, 20);
-            DB::table('user_company')->insert([
+            DB::table('company_user')->insert([
                 'user_id' => $userId,
                 'company_id' => $companyId,
             ]);
