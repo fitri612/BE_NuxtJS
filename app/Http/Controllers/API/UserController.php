@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Rules\Password;
+
 class UserController extends Controller
 {
     public function login(Request $request)
@@ -78,5 +79,22 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return ResponseFormatter::error($e->getMessage());
         }
+    }
+
+    public function logout(Request $request)
+    {
+
+        $token = $request->user()->currentAccessToken()->delete();
+
+        return ResponseFormatter::success($token, 'Token Revoked');
+    }
+
+    public function fetch(Request $request)
+    {
+        // get user
+        $user = $request->user();
+
+        // return response
+        return ResponseFormatter::success($user, 'Data profile user berhasil diambil');
     }
 }
