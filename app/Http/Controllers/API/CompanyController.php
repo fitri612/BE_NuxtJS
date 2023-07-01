@@ -50,6 +50,7 @@ class CompanyController extends Controller
 
     public function create(CreateCompanyRequest $request)
     {
+        dd($request->all());
         try {
             // check logo
             if ($request->hasFile('logo')) {
@@ -114,5 +115,10 @@ class CompanyController extends Controller
         } catch (Exception $e) {
             return ResponseFormatter::error($e->getMessage(), 500);
         }
+    }
+
+    public function testRequest(UpdateCompanyRequest $request, $id)
+    {
+        dd($request->all());
     }
 }
