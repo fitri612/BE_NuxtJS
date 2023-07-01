@@ -5,7 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -43,78 +46,78 @@ class CompanyController extends Controller
         );
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function create(Request $request)
     {
+        try {
+            // check logo
+            if ($request->hasFile('logo')) {
+                $file = $request->file('logo')->store('public/logos');
+            }
+
+            // create company
+            $company = Company::create([
+                'name' => $request->name,
+                'logo' => $file,
+            ]);
+
+            // return response
+            if (!$company) {
+                throw new Exception('Error in creating company');
+            }
+
+            // attach user to company
+            $user = User::find(Auth::user()->id);
+            $user->companies()->attach($company->id);
+
+            // load company with user
+            $company->load('users');
+
+            return ResponseFormatter::success(
+                $company,
+                'Company berhasil ditambahkan'
+            );
+        } catch (Exception $e) {
+            return ResponseFormatter::error(
+                $e->getMessage(),
+                'Company gagal ditambahkan'
+            );
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
-    }
+        try {
+            // check logo
+            if ($request->hasFile('logo')) {
+                $file = $request->file('logo')->store('public/logos');
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            // find company
+            $company = Company::find($id);
+
+            // update company
+            $company->update([
+                'name' => $request->name,
+                'logo' => $file,
+            ]);
+
+            // return response
+            if (!$company) {
+                throw new Exception('Error in updating company');
+            }
+
+            // load company with user
+            $company->load('users');
+
+            return ResponseFormatter::success(
+                $company,
+                'Company berhasil diupdate'
+            );
+        } catch (Exception $e) {
+            return ResponseFormatter::error(
+                $e->getMessage(),
+                'Company gagal diupdate'
+            );
+        }
     }
 }

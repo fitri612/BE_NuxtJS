@@ -20,7 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/company', [CompanyController::class, 'all']);
+// company
+Route::get('/company/company', [CompanyController::class, 'all']);
+Route::post('/company/company', [CompanyController::class, 'create'])->middleware('auth:sanctum');
+
+// auth
 Route::post('/auth/login', [UserController::class, 'login']);
 Route::post('/auth/register', [UserController::class, 'register']);
 Route::post('/auth/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
