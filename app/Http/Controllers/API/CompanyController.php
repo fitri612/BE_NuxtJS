@@ -52,7 +52,7 @@ class CompanyController extends Controller
 
     public function create(CreateCompanyRequest $request)
     {
-        dd($request->all());
+        // dd($request->all());
         try {
             // check logo
             if ($request->hasFile('logo')) {
@@ -91,8 +91,6 @@ class CompanyController extends Controller
 
     public function update(UpdateCompanyRequest $request, $id)
     {
-        // dd($request->all());
-        // dd($id);
         try {
             // Get company
             $company = Company::find($id);
@@ -117,10 +115,5 @@ class CompanyController extends Controller
         } catch (Exception $e) {
             return ResponseFormatter::error($e->getMessage(), 500);
         }
-    }
-
-    public function testRequest(UpdateCompanyRequest $request, $id)
-    {
-        dd($request->all());
     }
 }

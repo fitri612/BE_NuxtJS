@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\CompanyController;
+use App\Http\Controllers\API\TeamController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 // company grouping route
-Route::prefix('company/company')->middleware('auth:sanctum')->name('company.company.')->group(function () {
+Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(function () {
     Route::get('', [CompanyController::class, 'fetch'])->name('fetch');
     Route::post('', [CompanyController::class, 'create'])->name('create');
     Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
@@ -38,6 +39,15 @@ Route::name('auth.')->group(function () {
     });
 });
 
+// team grouping route
+Route::prefix('team')->middleware('auth:sanctum')->name('team.')->group(function () {
+    Route::get('', [TeamController::class, 'fetch'])->name('fetch');
+    Route::post('', [TeamController::class, 'create'])->name('create');
+    Route::post('update/{id}', [TeamController::class, 'update'])->name('update');
+    Route::delete('{id}', [TeamController::class, 'delete'])->name('delete');
+});
+
+
 // company
 // Route::get('/company/company', [CompanyController::class, 'fetch']);
 // Route::post('/company/company', [CompanyController::class, 'create'])->middleware('auth:sanctum');
@@ -45,7 +55,7 @@ Route::name('auth.')->group(function () {
 // Route::put('/company/company/update/{id}', [CompanyController::class, 'testRequest'])->middleware('auth:sanctum');
 
 // auth
-Route::post('/auth/login', [UserController::class, 'login']);
-Route::post('/auth/register', [UserController::class, 'register']);
-Route::post('/auth/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-Route::get('/auth/user', [UserController::class, 'fetch'])->middleware('auth:sanctum');
+// Route::post('/auth/login', [UserController::class, 'login']);
+// Route::post('/auth/register', [UserController::class, 'register']);
+// Route::post('/auth/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+// Route::get('/auth/user', [UserController::class, 'fetch'])->middleware('auth:sanctum');
