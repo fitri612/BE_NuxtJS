@@ -27,6 +27,17 @@ Route::prefix('company/company')->middleware('auth:sanctum')->name('company.comp
     Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
 });
 
+// auth grouping route
+Route::name('auth.')->group(function () {
+    Route::post('login', [UserController::class, 'login'])->name('login');
+    Route::post('register', [UserController::class, 'register'])->name('register');
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [UserController::class, 'logout'])->name('logout');
+        Route::get('user', [UserController::class, 'fetch'])->name('user');
+    });
+});
+
 // company
 // Route::get('/company/company', [CompanyController::class, 'fetch']);
 // Route::post('/company/company', [CompanyController::class, 'create'])->middleware('auth:sanctum');

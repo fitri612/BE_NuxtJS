@@ -19,34 +19,36 @@ class CompanyController extends Controller
     {
         $id = $request->input('id');
         $name = $request->input('name');
-        $limit = $request->input('limit', 5);
+        $limit = $request->input('limit', 10);
 
+        $companyQuery = Company::with(['users'])->whereHas('users', function ($query) {
+            $query->where('user_id', Auth::id());
+        });
+
+        // Get single data
         if ($id) {
-            $company = Company::find($id);
+            $company = $companyQuery->find($id);
 
             if ($company) {
-                return ResponseFormatter::success(
-                    $company,
-                    'Data company berhasil diambil'
-                );
-            } else {
-                return ResponseFormatter::error(
-                    'Data company tidak ada',
-                    404
-                );
+                return ResponseFormatter::success($company, 'Company found');
             }
+
+            return ResponseFormatter::error('Company not found', 404);
         }
 
-        $companies = Company::with(['users']);
+        // Get multiple data
+        $companies = $companyQuery;
+
         if ($name) {
             $companies->where('name', 'like', '%' . $name . '%');
         }
 
         return ResponseFormatter::success(
             $companies->paginate($limit),
-            'Companiest list data berhasil diambil'
+            'Companies found'
         );
     }
+
 
     public function create(CreateCompanyRequest $request)
     {

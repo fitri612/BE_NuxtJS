@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,13 @@ class UserController extends Controller
                 return ResponseFormatter::error('Unauthorized', 401);
             }
 
-            $user = User::where('email', $request->email)->first();
+            // $user = User::where('email', $request->email)->first();
+
+            // change to this
+            $user = Company::whereHas('users', function ($query) {
+                $query->where('user_id', Auth::id());
+            });
+
             if (!Hash::check($request->password, $user->password, [])) {
                 throw new \Exception('Invalid Password');
             }
