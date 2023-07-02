@@ -22,14 +22,15 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('photo')->nullable();
 
-            $table->bigInteger('team_id')->references('id')->on('teams');
-            $table->bigInteger('role_id')->references('id')->on('roles');
+            $table->bigInteger('team_id')->unsigned();
+            $table->bigInteger('role_id')->unsigned();
 
-            $table->string('is_verified')->default(false);
-            $table->string('verified_at')->nullable();
+            $table->boolean('is_verified')->default(false);
+            $table->timestamp('verified_at')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
+
         });
     }
 

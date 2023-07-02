@@ -26,7 +26,7 @@ class RoleController extends Controller
             $role = $roleQuery->find($id);
 
             if ($role) {
-                return ResponseFormatter::success($role, 'Role found');
+                return ResponseFormatter::success($role, 'Role found 1');
             }
 
             return ResponseFormatter::error('Role not found', 404);
@@ -34,6 +34,7 @@ class RoleController extends Controller
 
         // Get multiple data
         $roles = $roleQuery->where('company_id', request()->company_id);
+        // dd("TEST", $roles->get());
 
         if ($name) {
             $roles->where('name', 'like', '%' . $name . '%');

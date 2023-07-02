@@ -19,10 +19,11 @@ class Employee extends Model
         'gender',
         'age',
         'phone',
+        'photo',
         'team_id',
         'role_id',
         'is_verified',
-        'responsibility_id',
+        'verified_at',
     ];
 
     public function team()

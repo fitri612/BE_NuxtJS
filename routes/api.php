@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\CompanyController;
+use App\Http\Controllers\API\EmployeeController;
+use App\Http\Controllers\API\ResponsibilityController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\TeamController;
 use App\Http\Controllers\API\UserController;
@@ -31,12 +33,12 @@ Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(fu
 
 // auth grouping route
 Route::name('auth.')->group(function () {
-    Route::post('login', [UserController::class, 'login'])->name('login');
-    Route::post('register', [UserController::class, 'register'])->name('register');
+    Route::post('/auth/login', [UserController::class, 'login']);
+    Route::post('/auth/register', [UserController::class, 'register']);
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('logout', [UserController::class, 'logout'])->name('logout');
-        Route::get('user', [UserController::class, 'fetch'])->name('user');
+        Route::post('/auth/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+        Route::get('/auth/user', [UserController::class, 'fetch'])->middleware('auth:sanctum');
     });
 });
 
@@ -54,6 +56,21 @@ Route::prefix('role')->middleware('auth:sanctum')->name('role.')->group(function
     Route::post('', [RoleController::class, 'create'])->name('create');
     Route::post('update/{id}', [RoleController::class, 'update'])->name('update');
     Route::delete('{id}', [RoleController::class, 'delete'])->name('delete');
+});
+
+// responsibility grouping route
+Route::prefix('responsibility')->middleware('auth:sanctum')->name('responsibility.')->group(function () {
+    Route::get('', [ResponsibilityController::class, 'fetch'])->name('fetch');
+    Route::post('', [ResponsibilityController::class, 'create'])->name('create');
+    Route::delete('{id}', [ResponsibilityController::class, 'delete'])->name('delete');
+});
+
+// employee grouping route
+Route::prefix('employee')->middleware('auth:sanctum')->name('employee.')->group(function () {
+    Route::get('', [EmployeeController::class, 'fetch'])->name('fetch');
+    Route::post('', [EmployeeController::class, 'create'])->name('create');
+    Route::post('update/{id}', [EmployeeController::class, 'update'])->name('update');
+    Route::delete('{id}', [EmployeeController::class, 'delete'])->name('delete');
 });
 
 
