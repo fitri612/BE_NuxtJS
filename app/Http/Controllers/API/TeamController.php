@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TeamController extends Controller
 {
-    //
-
 
     public function fetch(Request $request)
     {
@@ -50,7 +48,6 @@ class TeamController extends Controller
 
     public function create(CreateTeamRequest $request)
     {
-        // dd($request->all());
         try {
             // check logo
             if ($request->hasFile('icon')) {
@@ -60,7 +57,7 @@ class TeamController extends Controller
             // create team
             $team = Team::create([
                 'name' => $request->name,
-                'icon' => $file,
+                'icon' => isset($file) ? $file : null, // if file exists, set file, else set null (default
                 'company_id' => $request->company_id,
             ]);
 
@@ -100,7 +97,7 @@ class TeamController extends Controller
             // Update team
             $team->update([
                 'name' => $request->name,
-                'icon' => $file,
+                'icon' => isset($file) ? $file : $team->icon,
                 'company_id' => $request->company_id,
             ]);
 

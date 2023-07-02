@@ -108,7 +108,7 @@ class CompanyController extends Controller
             // Update company
             $company->update([
                 'name' => $request->name,
-                'logo' => $path,
+                'logo' => isset($path) ? $path : $company->logo // if file exists, set file, else set old file (default
             ]);
 
             return ResponseFormatter::success($company, 'Company updated');
